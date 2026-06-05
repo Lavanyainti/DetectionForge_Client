@@ -66,7 +66,7 @@ export function BookDemoDialog() {
     // });
     try{
       console.log(parsed.data.name)
-      const result=await axios.post("http://localhost:5011/api/createDemo", {
+      const result=await axios.post("https://detectionforge.onrender.com/api/createDemo", {
       name: parsed.data.name,
       email: parsed.data.email,
       company: parsed.data.company,
