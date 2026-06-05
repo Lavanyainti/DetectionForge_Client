@@ -65,7 +65,8 @@ export function BookDemoDialog() {
     //   user_agent: typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 500) : null,
     // });
     try{
-      const result=await axios.post("https://detectionforge.onrender.com/api/createDemo", {
+      console.log(parsed.data.name)
+      const result=await axios.post("http://localhost:5011/api/createDemo", {
       name: parsed.data.name,
       email: parsed.data.email,
       company: parsed.data.company,
