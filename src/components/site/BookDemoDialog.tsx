@@ -66,7 +66,7 @@ export function BookDemoDialog() {
     // });
     try{
       console.log(parsed.data.name)
-      const result=await axios.post("https://detectionforge.onrender.com/api/createDemo", {
+      const result=await axios.post("https://detection-forge-server.vercel.app/api/createDemo", {
       name: parsed.data.name,
       email: parsed.data.email,
       company: parsed.data.company,
