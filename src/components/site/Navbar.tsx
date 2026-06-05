@@ -3,7 +3,7 @@ import { Moon, Sun, Menu, X } from "lucide-react";
 import { useState,useEffect } from "react";
 import { useTheme } from "@/lib/theme";
 import { openBookDemo } from "@/components/site/BookDemoDialog";
-import logo from "@/assets/detection-forge-logo.png";
+import logo from "../../assets/Logo2.png";
 
 
 const NAV = [

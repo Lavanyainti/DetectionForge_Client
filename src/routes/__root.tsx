@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Logo from '../assets/Logo2.png'
 import {
   Outlet,
   Link,
@@ -82,11 +83,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
+              {
+                rel: "stylesheet",
+                href: appCss,
+              },
+              {
+                rel: "icon",
+                href: Logo,
+              },
+          ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
