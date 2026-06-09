@@ -11,10 +11,14 @@ import {
   Metrics,
   Integrations,
   CTA,
+
 } from "@/components/site/Sections";
 import { Footer } from "@/components/site/Footer";
 import { BookDemoDialog } from "@/components/site/BookDemoDialog";
 import { Toaster } from "@/components/ui/sonner";
+import { FloatingIcons } from "@/components/site/FloatingIcons";
+import { SignInDialog } from "@/components/site/SignInDialog";
+import { SignUpDialog } from "@/components/site/SignUpDailog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -54,7 +58,10 @@ function Home() {
         <CTA />
       </main>
       <Footer />
+      <FloatingIcons/>
       <BookDemoDialog />
+      <SignInDialog/>
+      <SignUpDialog/>
       <Toaster />
     </div>
   );

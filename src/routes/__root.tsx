@@ -1,5 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Logo from '../assets/Logo2.png'
+import { AnimatePresence, motion } from "framer-motion";
+import { AuthProvider } from "@/context/AuthContext";
+import { useRouterState } from "@tanstack/react-router";
+import Logo from '../assets/Logo.png'
 import {
   Outlet,
   Link,
@@ -10,6 +13,8 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useEffect, useRef, useState } from "react";
 
 function NotFoundComponent() {
   return (
@@ -115,11 +120,61 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+ const pathname = useRouterState({
+  select: (state) => state.location.pathname,
+});
+
+const routeOrder: Record<string, number> = {
+  "/": 0,
+  "/platform": 1,
+  "/use-cases": 2,
+  "/company": 3,
+  "/resources": 4,
+};
+
+const previousPath = useRef(pathname);
+const [direction, setDirection] = useState(1);
+
+useEffect(() => {
+  const current = routeOrder[pathname] ?? 0;
+  const previous = routeOrder[previousPath.current] ?? 0;
+
+  setDirection(current > previous ? 1 : -1);
+
+  previousPath.current = pathname;
+}, [pathname]);
+
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-    </QueryClientProvider>
+    <GoogleOAuthProvider clientId="599933401290-9oifhgktsr1l5fee5ce1pa5p0lcqb9ug.apps.googleusercontent.com">
+      <QueryClientProvider client={queryClient}>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <AuthProvider>
+            <AnimatePresence mode="wait">
+                  <motion.div
+                      key={pathname}
+                      initial={{
+                        opacity: 0,
+                        x: direction === 1 ? 100 : -100,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        x: 0,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        x: direction === 1 ? -100 : 100,
+                      }}
+                      transition={{
+                        duration: 0.4,
+                        ease: "easeInOut",
+                      }}
+                  >
+                      <Outlet />
+                  </motion.div>
+            </AnimatePresence>
+        </AuthProvider>
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
   );
 }

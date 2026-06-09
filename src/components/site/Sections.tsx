@@ -15,6 +15,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { openBookDemo } from "./BookDemoDialog";
+import { UseCasePanel } from "./UseCasePanel";
 
 /* ---------------- Problem ---------------- */
 export function Problem() {
@@ -224,6 +225,14 @@ export function Why() {
 
 /* ---------------- Use cases ---------------- */
 export function UseCases() {
+  const [openPanel, setOpenPanel] = useState(false);
+  const [selectedUseCase, setSelectedUseCase] = useState({
+    icon: "",
+    title: "",
+    why: "",
+    features: [] as string[],
+  impact: [] as string[],
+  });
   const cases = [
     "Detection engineering program management",
     "SOC content quality improvement",
@@ -235,28 +244,57 @@ export function UseCases() {
     "Investigation support for anomaly analysis",
     "Risk-aligned detection strategy and governance",
   ];
-  return (
+ return (
+  <>
     <section id="use-cases" className="border-b border-border">
       <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
-        <SectionHead label="Use cases" title="Where Detection Forge earns its place." />
+        <SectionHead
+          label="Use cases"
+          title="Where Detection Forge earns its place."
+        />
+
         <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {cases.map((c, i) => (
-            <a
+            <div
               key={c}
-              href="#demo"
-              className="group flex items-center justify-between rounded-lg border border-border bg-surface px-4 py-4 transition-colors hover:border-teal/40 hover:bg-surface-elevated"
+              onClick={() => {
+                setSelectedUseCase({
+                  icon: "🛡️",
+                  title: c,
+                  why: "Teams struggle to manage and validate detection rules across environments.",
+                  features: [
+                    "Central rule repository",
+                    "Version history",
+                    "Approval workflow",
+                    "MITRE mapping",
+                  ],
+                  impact: [
+                    "40% faster rule deployment",
+                    "Reduced false positives",
+                  ],
+                });
+                setOpenPanel(true);
+              }}
+              className="group flex cursor-pointer items-center justify-between rounded-lg border border-border bg-surface px-4 py-4 transition-colors hover:border-teal/40 hover:bg-surface-elevated"
             >
               <div className="flex items-center gap-3">
-                <span className="font-mono text-[10px] text-muted-foreground">0{i + 1}</span>
                 <span className="text-sm font-medium">{c}</span>
               </div>
+
               <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-teal" />
-            </a>
+            </div>
           ))}
         </div>
       </div>
     </section>
-  );
+
+    <UseCasePanel
+      open={openPanel}
+      setOpen={setOpenPanel}
+      data={selectedUseCase}
+    />
+  </>
+);
 }
 
 /* ---------------- Metrics ---------------- */
@@ -377,11 +415,12 @@ function SectionLabel({ icon: Icon, children }: { icon: typeof Check; children: 
 function SectionHead({ label, title, sub }: { label: string; title: string; sub?: string }) {
   return (
     <div className="max-w-2xl">
-      <div className="font-mono text-xs uppercase tracking-wider text-teal">{label}</div>
+      <div className="font-mono font-bold text-2xl uppercase tracking-wider text-teal">{label}</div>
       <h2 className="mt-3 text-balance text-3xl font-semibold tracking-tight md:text-4xl">{title}</h2>
       {sub && <p className="mt-4 text-pretty text-muted-foreground">{sub}</p>}
     </div>
   );
 }
 
-import { Check } from "lucide-react";
+import { Check } from "lucide-react";import { useState } from "react";
+

@@ -9,7 +9,7 @@ export function Hero() {
       <div className="absolute inset-x-0 top-0 -z-10 h-[600px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,color-mix(in_oklab,var(--teal)_18%,transparent),transparent_70%)]" />
 
       <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-16 md:pt-28 md:pb-24">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="mx-auto max-w-5xl text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur">
             <span className="h-1.5 w-1.5 rounded-full bg-teal" />
             Detection assurance for modern SOC teams
@@ -39,7 +39,7 @@ export function Hero() {
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
             {[
-              [ShieldCheck, "Works with Splunk and Sentinel"],
+              [ShieldCheck, "SIEM-agnostic — works with any SIEM platform"],
               [Database, "Uses historical logs already in your environment"],
               [Building2, "Built for enterprise SOC and MDR teams"],
             ].map(([Icon, label]) => {

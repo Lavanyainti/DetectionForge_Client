@@ -9,38 +9,170 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UseCasesRouteImport } from './routes/use-cases'
+import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as PlatformRouteImport } from './routes/platform'
+import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UseCasesSlugRouteImport } from './routes/use-cases.$slug'
+import { Route as ResourcesSlugRouteImport } from './routes/resources.$slug'
+import { Route as PlatformSlugRouteImport } from './routes/platform.$slug'
+import { Route as CompanySlugRouteImport } from './routes/company.$slug'
 
+const UseCasesRoute = UseCasesRouteImport.update({
+  id: '/use-cases',
+  path: '/use-cases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformRoute = PlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompanyRoute = CompanyRouteImport.update({
+  id: '/company',
+  path: '/company',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UseCasesSlugRoute = UseCasesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => UseCasesRoute,
+} as any)
+const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ResourcesRoute,
+} as any)
+const PlatformSlugRoute = PlatformSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PlatformRoute,
+} as any)
+const CompanySlugRoute = CompanySlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CompanyRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/company': typeof CompanyRouteWithChildren
+  '/platform': typeof PlatformRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/company/$slug': typeof CompanySlugRoute
+  '/platform/$slug': typeof PlatformSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/company': typeof CompanyRouteWithChildren
+  '/platform': typeof PlatformRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/company/$slug': typeof CompanySlugRoute
+  '/platform/$slug': typeof PlatformSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/company': typeof CompanyRouteWithChildren
+  '/platform': typeof PlatformRouteWithChildren
+  '/resources': typeof ResourcesRouteWithChildren
+  '/use-cases': typeof UseCasesRouteWithChildren
+  '/company/$slug': typeof CompanySlugRoute
+  '/platform/$slug': typeof PlatformSlugRoute
+  '/resources/$slug': typeof ResourcesSlugRoute
+  '/use-cases/$slug': typeof UseCasesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/company'
+    | '/platform'
+    | '/resources'
+    | '/use-cases'
+    | '/company/$slug'
+    | '/platform/$slug'
+    | '/resources/$slug'
+    | '/use-cases/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/company'
+    | '/platform'
+    | '/resources'
+    | '/use-cases'
+    | '/company/$slug'
+    | '/platform/$slug'
+    | '/resources/$slug'
+    | '/use-cases/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/company'
+    | '/platform'
+    | '/resources'
+    | '/use-cases'
+    | '/company/$slug'
+    | '/platform/$slug'
+    | '/resources/$slug'
+    | '/use-cases/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CompanyRoute: typeof CompanyRouteWithChildren
+  PlatformRoute: typeof PlatformRouteWithChildren
+  ResourcesRoute: typeof ResourcesRouteWithChildren
+  UseCasesRoute: typeof UseCasesRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/use-cases': {
+      id: '/use-cases'
+      path: '/use-cases'
+      fullPath: '/use-cases'
+      preLoaderRoute: typeof UseCasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform': {
+      id: '/platform'
+      path: '/platform'
+      fullPath: '/platform'
+      preLoaderRoute: typeof PlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/company': {
+      id: '/company'
+      path: '/company'
+      fullPath: '/company'
+      preLoaderRoute: typeof CompanyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +180,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/use-cases/$slug': {
+      id: '/use-cases/$slug'
+      path: '/$slug'
+      fullPath: '/use-cases/$slug'
+      preLoaderRoute: typeof UseCasesSlugRouteImport
+      parentRoute: typeof UseCasesRoute
+    }
+    '/resources/$slug': {
+      id: '/resources/$slug'
+      path: '/$slug'
+      fullPath: '/resources/$slug'
+      preLoaderRoute: typeof ResourcesSlugRouteImport
+      parentRoute: typeof ResourcesRoute
+    }
+    '/platform/$slug': {
+      id: '/platform/$slug'
+      path: '/$slug'
+      fullPath: '/platform/$slug'
+      preLoaderRoute: typeof PlatformSlugRouteImport
+      parentRoute: typeof PlatformRoute
+    }
+    '/company/$slug': {
+      id: '/company/$slug'
+      path: '/$slug'
+      fullPath: '/company/$slug'
+      preLoaderRoute: typeof CompanySlugRouteImport
+      parentRoute: typeof CompanyRoute
+    }
   }
 }
 
+interface CompanyRouteChildren {
+  CompanySlugRoute: typeof CompanySlugRoute
+}
+
+const CompanyRouteChildren: CompanyRouteChildren = {
+  CompanySlugRoute: CompanySlugRoute,
+}
+
+const CompanyRouteWithChildren =
+  CompanyRoute._addFileChildren(CompanyRouteChildren)
+
+interface PlatformRouteChildren {
+  PlatformSlugRoute: typeof PlatformSlugRoute
+}
+
+const PlatformRouteChildren: PlatformRouteChildren = {
+  PlatformSlugRoute: PlatformSlugRoute,
+}
+
+const PlatformRouteWithChildren = PlatformRoute._addFileChildren(
+  PlatformRouteChildren,
+)
+
+interface ResourcesRouteChildren {
+  ResourcesSlugRoute: typeof ResourcesSlugRoute
+}
+
+const ResourcesRouteChildren: ResourcesRouteChildren = {
+  ResourcesSlugRoute: ResourcesSlugRoute,
+}
+
+const ResourcesRouteWithChildren = ResourcesRoute._addFileChildren(
+  ResourcesRouteChildren,
+)
+
+interface UseCasesRouteChildren {
+  UseCasesSlugRoute: typeof UseCasesSlugRoute
+}
+
+const UseCasesRouteChildren: UseCasesRouteChildren = {
+  UseCasesSlugRoute: UseCasesSlugRoute,
+}
+
+const UseCasesRouteWithChildren = UseCasesRoute._addFileChildren(
+  UseCasesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CompanyRoute: CompanyRouteWithChildren,
+  PlatformRoute: PlatformRouteWithChildren,
+  ResourcesRoute: ResourcesRouteWithChildren,
+  UseCasesRoute: UseCasesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
