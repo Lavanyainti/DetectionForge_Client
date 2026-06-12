@@ -23,6 +23,7 @@ export function SignInDialog() {
   const router = useRouter();
   const { setIsLoggedIn } = useAuth();
   const navigate=useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const handler = () => setOpen(true);
@@ -65,6 +66,7 @@ export function SignInDialog() {
         try{
           //https://detection-forge-server.vercel.app/api/loginMail
           //http://localhost:5011
+          setIsLoading(true);
           const res=await axios.post('https://detection-forge-server.vercel.app/api/loginMail',{email,password},{withCredentials: true,})
           console.log(res.data.data.expiresAt)
           localStorage.setItem("expiresAt", res.data.data.expiresAt);
@@ -77,7 +79,9 @@ export function SignInDialog() {
         }catch(err){
           console.log(err)
           return;
-        }
+        } finally {
+    setIsLoading(false);
+  }
         
     }
   return (
@@ -134,10 +138,10 @@ export function SignInDialog() {
 </div>
           </div>
 
-          <button
+          <button disabled={isLoading}
             className="inline-flex h-11 w-full items-center justify-center rounded-md bg-foreground text-background" onClick={handleMailLogin}
           >
-            Sign In
+             {isLoading ? "Signing In..." : "Sign In"}
           </button>
 
         </div>

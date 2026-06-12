@@ -73,7 +73,7 @@ rejectedAt: string | null;
   const getRequests = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5011/api/allDemoRequests"
+        "https://detection-forge-server.vercel.app/api/allDemoRequests"
       );
       console.log(res.data)
       console.log(res.data.requests)
@@ -88,7 +88,7 @@ rejectedAt: string | null;
   const handleApprove = async (id: string) => {
   try {
     const res = await axios.patch(
-      `http://localhost:5011/api/demoRequests/${id}/approve`
+      `https://detection-forge-server.vercel.app/api/${id}/approve`
     );
 
     console.log(res.data);
