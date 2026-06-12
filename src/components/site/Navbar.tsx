@@ -25,6 +25,22 @@ export function Navbar() {
   const navigate = useNavigate();
 
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+ 
+  const [role, setRole] = useState(
+  localStorage.getItem("role") || ""
+);
+
+  useEffect(() => {
+  const handleRoleChange = () => {
+    setRole(localStorage.getItem("role") || "");
+  };
+
+  window.addEventListener("roleChanged", handleRoleChange);
+
+  return () => {
+    window.removeEventListener("roleChanged", handleRoleChange);
+  };
+}, []);
 
   useEffect(() => {
   const expiresAt = localStorage.getItem("expiresAt");
@@ -53,6 +69,8 @@ export function Navbar() {
 
  const handleLogout = async () => {
   try {
+    //https://detection-forge-server.vercel.app
+    //http://localhost:5011
     await axios.post(
       "https://detection-forge-server.vercel.app/api/logout",
       {},
@@ -119,13 +137,6 @@ export function Navbar() {
           {!isLoggedIn ? (
   <>
     <button
-      onClick={openSignUp}
-      className="hidden h-9 items-center rounded-md border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated md:inline-flex"
-    >
-      Sign Up
-    </button>
-
-    <button
       onClick={openSignIn}
       className="hidden h-9 items-center rounded-md border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated md:inline-flex"
     >
@@ -133,12 +144,22 @@ export function Navbar() {
     </button>
   </>
 ) : (
+  <>
+  {role === "admin" && (
+          <button
+            onClick={() => navigate({ to: "/dashboard" })}
+            className="hidden h-9 items-center rounded-md border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated md:inline-flex"
+          >
+            Admin Portal
+          </button>
+      )}
   <button
     onClick={handleLogout}
     className="hidden h-9 items-center rounded-md border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated md:inline-flex"
   >
     Sign Out
   </button>
+  </>
 )}
           <button
             onClick={openBookDemo}

@@ -12,10 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UseCasesRouteImport } from './routes/use-cases'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as PlatformRouteImport } from './routes/platform'
+import { Route as ForgotPasswordRouteImport } from './routes/forgotPassword'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CompanyRouteImport } from './routes/company'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UseCasesSlugRouteImport } from './routes/use-cases.$slug'
 import { Route as ResourcesSlugRouteImport } from './routes/resources.$slug'
+import { Route as ResetPasswordTokenRouteImport } from './routes/resetPassword.$token'
 import { Route as PlatformSlugRouteImport } from './routes/platform.$slug'
 import { Route as CompanySlugRouteImport } from './routes/company.$slug'
 
@@ -32,6 +35,16 @@ const ResourcesRoute = ResourcesRouteImport.update({
 const PlatformRoute = PlatformRouteImport.update({
   id: '/platform',
   path: '/platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgotPassword',
+  path: '/forgotPassword',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompanyRoute = CompanyRouteImport.update({
@@ -54,6 +67,11 @@ const ResourcesSlugRoute = ResourcesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ResourcesRoute,
 } as any)
+const ResetPasswordTokenRoute = ResetPasswordTokenRouteImport.update({
+  id: '/resetPassword/$token',
+  path: '/resetPassword/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlatformSlugRoute = PlatformSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -68,22 +86,28 @@ const CompanySlugRoute = CompanySlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/company': typeof CompanyRouteWithChildren
+  '/dashboard': typeof DashboardRoute
+  '/forgotPassword': typeof ForgotPasswordRoute
   '/platform': typeof PlatformRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
   '/company/$slug': typeof CompanySlugRoute
   '/platform/$slug': typeof PlatformSlugRoute
+  '/resetPassword/$token': typeof ResetPasswordTokenRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/company': typeof CompanyRouteWithChildren
+  '/dashboard': typeof DashboardRoute
+  '/forgotPassword': typeof ForgotPasswordRoute
   '/platform': typeof PlatformRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
   '/company/$slug': typeof CompanySlugRoute
   '/platform/$slug': typeof PlatformSlugRoute
+  '/resetPassword/$token': typeof ResetPasswordTokenRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
 }
@@ -91,11 +115,14 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/company': typeof CompanyRouteWithChildren
+  '/dashboard': typeof DashboardRoute
+  '/forgotPassword': typeof ForgotPasswordRoute
   '/platform': typeof PlatformRouteWithChildren
   '/resources': typeof ResourcesRouteWithChildren
   '/use-cases': typeof UseCasesRouteWithChildren
   '/company/$slug': typeof CompanySlugRoute
   '/platform/$slug': typeof PlatformSlugRoute
+  '/resetPassword/$token': typeof ResetPasswordTokenRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/use-cases/$slug': typeof UseCasesSlugRoute
 }
@@ -104,33 +131,42 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/company'
+    | '/dashboard'
+    | '/forgotPassword'
     | '/platform'
     | '/resources'
     | '/use-cases'
     | '/company/$slug'
     | '/platform/$slug'
+    | '/resetPassword/$token'
     | '/resources/$slug'
     | '/use-cases/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/company'
+    | '/dashboard'
+    | '/forgotPassword'
     | '/platform'
     | '/resources'
     | '/use-cases'
     | '/company/$slug'
     | '/platform/$slug'
+    | '/resetPassword/$token'
     | '/resources/$slug'
     | '/use-cases/$slug'
   id:
     | '__root__'
     | '/'
     | '/company'
+    | '/dashboard'
+    | '/forgotPassword'
     | '/platform'
     | '/resources'
     | '/use-cases'
     | '/company/$slug'
     | '/platform/$slug'
+    | '/resetPassword/$token'
     | '/resources/$slug'
     | '/use-cases/$slug'
   fileRoutesById: FileRoutesById
@@ -138,9 +174,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CompanyRoute: typeof CompanyRouteWithChildren
+  DashboardRoute: typeof DashboardRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   PlatformRoute: typeof PlatformRouteWithChildren
   ResourcesRoute: typeof ResourcesRouteWithChildren
   UseCasesRoute: typeof UseCasesRouteWithChildren
+  ResetPasswordTokenRoute: typeof ResetPasswordTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -164,6 +203,20 @@ declare module '@tanstack/react-router' {
       path: '/platform'
       fullPath: '/platform'
       preLoaderRoute: typeof PlatformRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgotPassword': {
+      id: '/forgotPassword'
+      path: '/forgotPassword'
+      fullPath: '/forgotPassword'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/company': {
@@ -193,6 +246,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/resources/$slug'
       preLoaderRoute: typeof ResourcesSlugRouteImport
       parentRoute: typeof ResourcesRoute
+    }
+    '/resetPassword/$token': {
+      id: '/resetPassword/$token'
+      path: '/resetPassword/$token'
+      fullPath: '/resetPassword/$token'
+      preLoaderRoute: typeof ResetPasswordTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/platform/$slug': {
       id: '/platform/$slug'
@@ -261,9 +321,12 @@ const UseCasesRouteWithChildren = UseCasesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CompanyRoute: CompanyRouteWithChildren,
+  DashboardRoute: DashboardRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   PlatformRoute: PlatformRouteWithChildren,
   ResourcesRoute: ResourcesRouteWithChildren,
   UseCasesRoute: UseCasesRouteWithChildren,
+  ResetPasswordTokenRoute: ResetPasswordTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

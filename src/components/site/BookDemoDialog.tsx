@@ -16,13 +16,27 @@ export function openBookDemo() {
 }
 
 const schema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100),
-  email: z.string().trim().email("Enter a valid work email").max(255),
-  company: z.string().trim().min(1, "Company is required").max(150),
-  role: z.string().trim().max(150).optional(),
-  message: z.string().trim().max(1000).optional(),
-});
+  firstName: z.string().trim().min(1, "First name is required"),
+  lastName: z.string().trim().min(1, "Last name is required"),
 
+  companyName: z.string().trim().min(1, "Company name is required"),
+
+  companyEmail: z
+    .string()
+    .trim()
+    .email("Enter a valid company email"),
+
+ phoneNumber: z
+  .string()
+  .trim()
+  .regex(/^[0-9+\-\s()]{10,15}$/, "Enter a valid phone number"),
+
+  role: z.string().trim().min(1, "Role is required"),
+
+  location: z.string().trim().min(1, "Location is required"),
+
+  message: z.string().trim().min(1, "Message is required"),
+});
 export function BookDemoDialog() {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -65,16 +79,22 @@ export function BookDemoDialog() {
     //   user_agent: typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 500) : null,
     // });
     try{
-      console.log(parsed.data.name)
-      const result=await axios.post("https://detection-forge-server.vercel.app/api/createDemo", {
-      name: parsed.data.name,
-      email: parsed.data.email,
-      company: parsed.data.company,
-      role: parsed.data.role || null,
-      message: parsed.data.message || null,
-      source: typeof window !== "undefined" ? window.location.pathname : null,
-      user_agent: typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 500) : null,
-     });
+      //https://detection-forge-server.vercel.app
+      //http://localhost:5011
+      console.log(parsed.data.firstName)
+      const result=await axios.post(
+  "https://detection-forge-server.vercel.app/api/createDemo",
+  {
+    firstName: parsed.data.firstName,
+    lastName: parsed.data.lastName,
+    companyName: parsed.data.companyName,
+    companyEmail: parsed.data.companyEmail,
+    phoneNumber: parsed.data.phoneNumber,
+    role: parsed.data.role,
+    location: parsed.data.location,
+    message: parsed.data.message,
+  }
+);
       setSubmitting(false);
       console.log(result)
       if(result){
@@ -116,30 +136,83 @@ export function BookDemoDialog() {
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={onSubmit} className="mt-2 space-y-4" noValidate>
-              <div className="grid gap-2">
-                <Label htmlFor="bd-name">Full name</Label>
-                <Input id="bd-name" name="name" autoComplete="name" maxLength={100} required />
-                {errors.name && <p className="text-xs text-danger">{errors.name}</p>}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-2">
+                  <Label>First Name</Label>
+                  <Input name="firstName" />
+                  {errors.firstName && (
+                    <p className="text-xs text-danger">{errors.firstName}</p>
+                  )}
+                </div>
+
+                <div className="grid gap-2">
+                  <Label>Last Name</Label>
+                  <Input name="lastName" />
+                  {errors.lastName && (
+                    <p className="text-xs text-danger">{errors.lastName}</p>
+                  )}
+                </div>
               </div>
+              <div className="grid gap-4 sm:grid-cols-2">
               <div className="grid gap-2">
-                <Label htmlFor="bd-email">Work email</Label>
-                <Input id="bd-email" name="email" type="email" autoComplete="email" maxLength={255} required />
-                {errors.email && <p className="text-xs text-danger">{errors.email}</p>}
+                <Label>Company Name</Label>
+                <Input name="companyName" />
+                {errors.companyName && (
+                  <p className="text-xs text-danger">{errors.companyName}</p>
+                )}
+              </div>
+
+              <div className="grid gap-2">
+                <Label>Company Email</Label>
+                <Input
+                  name="companyEmail"
+                  type="email"
+                />
+                {errors.companyEmail && (
+                  <p className="text-xs text-danger">{errors.companyEmail}</p>
+                )}
+              </div>
+
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label htmlFor="bd-company">Company</Label>
-                  <Input id="bd-company" name="company" autoComplete="organization" maxLength={150} required />
-                  {errors.company && <p className="text-xs text-danger">{errors.company}</p>}
+                  <Label>Role</Label>
+                  <Input name="role" />
+                  {errors.role && (
+                    <p className="text-xs text-danger">{errors.role}</p>
+                  )}
                 </div>
+
                 <div className="grid gap-2">
-                  <Label htmlFor="bd-role">Role <span className="text-muted-foreground">(optional)</span></Label>
-                  <Input id="bd-role" name="role" autoComplete="organization-title" maxLength={150} />
+                  <Label>Location</Label>
+                  <Input name="location" />
+                  {errors.location && (
+                    <p className="text-xs text-danger">{errors.location}</p>
+                  )}
                 </div>
               </div>
+              <div className="flex">
+                <div className="flex items-center rounded-l-md border border-r-0 px-3">
+                  +91
+                </div>
+
+                <Input
+                  name="phoneNumber"
+                  type="tel"
+                  placeholder="9876543210"
+                  className="rounded-l-none"
+                  required
+                />
+              </div>
               <div className="grid gap-2">
-                <Label htmlFor="bd-message">What would you like to see? <span className="text-muted-foreground">(optional)</span></Label>
-                <Textarea id="bd-message" name="message" rows={3} maxLength={1000} />
+                <Label>Message</Label>
+                <Textarea
+                  name="message"
+                  rows={4}
+                />
+                {errors.message && (
+                  <p className="text-xs text-danger">{errors.message}</p>
+                )}
               </div>
               <button
                 type="submit"

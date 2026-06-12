@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useRouter } from "@tanstack/react-router";
+import { useNavigate, useRouter } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 
@@ -22,6 +22,7 @@ export function SignInDialog() {
   const [password,setPassword]=useState('')
   const router = useRouter();
   const { setIsLoggedIn } = useAuth();
+  const navigate=useNavigate();
 
   useEffect(() => {
     const handler = () => setOpen(true);
@@ -39,12 +40,13 @@ export function SignInDialog() {
                 authProvide:"google"
             }
 
-            const res = await axios.post("http://localhost:5011/api/authGoogle", {token,},{withCredentials: true,});
+            const res = await axios.post("https://detection-forge-server.vercel.app/api/authGoogle", {token,},{withCredentials: true,});
             //console.log(res.data.expiresAt)
             console.log(res)
             localStorage.setItem("expiresAt", res.data.expiresAt);
+            localStorage.setItem("role", res.data.role);
             setIsLoggedIn(true);
-
+            window.dispatchEvent(new Event("roleChanged"));
             setOpen(false); // close dialog
             toast.success('Login Success')
             router.navigate({ to: "/" }); // ✅ correct
@@ -61,10 +63,14 @@ export function SignInDialog() {
             return
         }
         try{
+          //https://detection-forge-server.vercel.app/api/loginMail
+          //http://localhost:5011
           const res=await axios.post('https://detection-forge-server.vercel.app/api/loginMail',{email,password},{withCredentials: true,})
           console.log(res.data.data.expiresAt)
           localStorage.setItem("expiresAt", res.data.data.expiresAt);
+          localStorage.setItem("role", res.data.data.role);
           setIsLoggedIn(true);
+          window.dispatchEvent(new Event("roleChanged"));
           console.log(res)
           setOpen(false); 
           toast.success('Login Success')
@@ -104,12 +110,28 @@ export function SignInDialog() {
 
           <div className="grid gap-2">
             <Label>Email</Label>
-            <Input type="email" onChange={(e)=>setEmail(e.target.value)}/>
+            <input type="email" onChange={(e)=>setEmail(e.target.value)} className="w-full rounded-md border p-2"/>
           </div>
 
           <div className="grid gap-2">
             <Label>Password</Label>
-            <Input type="password" onChange={(e)=>setPassword(e.target.value)}/>
+            <input
+            type="password"
+           
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-md border p-2"
+          />
+            <div className="flex justify-end">
+  <button
+    type="button"
+    className="text-xs text-cyan-500 hover:underline"
+    onClick={() => {
+      navigate({ to: "/forgotPassword" })
+    }}
+  >
+    Forgot password?
+  </button>
+</div>
           </div>
 
           <button
