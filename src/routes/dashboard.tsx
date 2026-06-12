@@ -88,7 +88,7 @@ rejectedAt: string | null;
   const handleApprove = async (id: string) => {
   try {
     const res = await axios.patch(
-      `https://detection-forge-server.vercel.app/api/${id}/approve`
+      `https://detection-forge-server.vercel.app/api/demoRequests/${id}/approve`
     );
 
     console.log(res.data);
