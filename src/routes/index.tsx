@@ -18,7 +18,7 @@ import { BookDemoDialog } from "@/components/site/BookDemoDialog";
 import { Toaster } from "@/components/ui/sonner";
 import { FloatingIcons } from "@/components/site/FloatingIcons";
 import { SignInDialog } from "@/components/site/SignInDialog";
-import { SignUpDialog } from "@/components/site/SignUpDailog";
+import { UpdatePasswordDialog } from "@/components/site/UpdatePasswordDialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -61,7 +61,7 @@ function Home() {
       <FloatingIcons/>
       <BookDemoDialog />
       <SignInDialog/>
-      <SignUpDialog/>
+      <UpdatePasswordDialog/>
       <Toaster />
     </div>
   );

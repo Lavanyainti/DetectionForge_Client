@@ -16,6 +16,15 @@ import {
 } from "lucide-react";
 import { openBookDemo } from "./BookDemoDialog";
 import { UseCasePanel } from "./UseCasePanel";
+import { LucideIcon } from "lucide-react";
+
+import {
+  Shield,
+  Users,
+  Settings,
+  ClipboardCheck,
+  TrendingUp,
+} from "lucide-react";
 
 /* ---------------- Problem ---------------- */
 export function Problem() {
@@ -226,24 +235,124 @@ export function Why() {
 /* ---------------- Use cases ---------------- */
 export function UseCases() {
   const [openPanel, setOpenPanel] = useState(false);
-  const [selectedUseCase, setSelectedUseCase] = useState({
-    icon: "",
-    title: "",
-    why: "",
-    features: [] as string[],
-  impact: [] as string[],
-  });
-  const cases = [
-    "Detection engineering program management",
-    "SOC content quality improvement",
-    "MSSP / MDR content standardization",
-    "Pre-production rule validation",
-    "Detection coverage reviews for security leaders",
-    "Log-source coverage assessment",
-    "Identity-centric threat detection",
-    "Investigation support for anomaly analysis",
-    "Risk-aligned detection strategy and governance",
-  ];
+  type UseCase = {
+  icon: LucideIcon;
+  title: string;
+  why: string;
+  features: string[];
+  impact: string[];
+};
+const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
+const cases = [
+  {
+    icon: Shield,
+    title: "Detection engineering program management",
+    why: "Teams struggle to manage and validate detection rules across SIEMs, cloud, and endpoint environments without central governance.",
+    features: [
+      "Central rule repository",
+      "Version history",
+      "Approval workflow",
+      "MITRE ATT&CK mapping",
+    ],
+    impact: ["40% faster rule deployment", "Reduced false positives"],
+  },
+  {
+    icon: BarChart3,
+    title: "SOC content quality improvement",
+    why: "SOC teams face inconsistent detection quality, high alert noise, and lack of validation frameworks.",
+    features: [
+      "Detection tuning insights",
+      "Noise reduction analytics",
+      "Rule effectiveness scoring",
+      "Continuous validation pipeline",
+    ],
+    impact: ["30–50% reduction in alert noise", "Improved analyst efficiency"],
+  },
+  {
+    icon: Users,
+    title: "MSSP / MDR content standardization",
+    why: "Security providers struggle with inconsistent detection logic across multiple customer environments.",
+    features: [
+      "Multi-tenant rule templates",
+      "Standardized detection packs",
+      "Cross-customer consistency checks",
+      "Reusable detection libraries",
+    ],
+    impact: ["Faster onboarding of new clients", "Consistent detection quality across tenants"],
+  },
+  {
+    icon: Settings,
+    title: "Pre-production rule validation",
+    why: "Teams often deploy untested detection rules directly into production causing noise and missed alerts.",
+    features: [
+      "Rule simulation environment",
+      "Pre-deployment testing",
+      "False positive prediction",
+      "Coverage validation",
+    ],
+    impact: ["Reduced production incidents", "Higher detection accuracy"],
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Detection coverage reviews for security leaders",
+    why: "Security leaders lack visibility into what threats are actually covered by existing detections.",
+    features: [
+      "Coverage dashboards",
+      "Gap analysis reports",
+      "MITRE-based visibility",
+      "Executive summaries",
+    ],
+    impact: ["Better security posture visibility", "Improved audit readiness"],
+  },
+  {
+    icon: Database,
+    title: "Log-source coverage assessment",
+    why: "Organizations don’t know which log sources are missing or underutilized for threat detection.",
+    features: [
+      "Log source inventory",
+      "Coverage mapping",
+      "Missing telemetry detection",
+      "Integration recommendations",
+    ],
+    impact: ["Improved visibility across systems", "Reduced blind spots"],
+  },
+  {
+    icon: Fingerprint,
+    title: "Identity-centric threat detection",
+    why: "Traditional detection approaches miss identity-based attacks like credential abuse and session hijacking.",
+    features: [
+      "User behavior analytics",
+      "Identity risk scoring",
+      "Anomaly detection per user",
+      "Session monitoring",
+    ],
+    impact: ["Early breach detection", "Reduced lateral movement risk"],
+  },
+  {
+    icon: Search,
+    title: "Investigation support for anomaly analysis",
+    why: "Security analysts struggle to investigate anomalies quickly due to scattered data sources.",
+    features: [
+      "Unified investigation timeline",
+      "Anomaly correlation engine",
+      "Evidence linking",
+      "Case management support",
+    ],
+    impact: ["Faster incident response", "Reduced investigation time"],
+  },
+  {
+    icon: TrendingUp,
+    title: "Risk-aligned detection strategy and governance",
+    why: "Organizations lack alignment between business risk and detection engineering priorities.",
+    features: [
+      "Risk-based prioritization",
+      "Detection governance framework",
+      "Strategic alignment dashboards",
+      "Compliance mapping",
+    ],
+    impact: ["Better risk coverage", "Improved compliance alignment"],
+  },
+];
  return (
   <>
     <section id="use-cases" className="border-b border-border">
@@ -254,45 +363,36 @@ export function UseCases() {
         />
 
         <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {cases.map((c, i) => (
-            <div
-              key={c}
-              onClick={() => {
-                setSelectedUseCase({
-                  icon: "🛡️",
-                  title: c,
-                  why: "Teams struggle to manage and validate detection rules across environments.",
-                  features: [
-                    "Central rule repository",
-                    "Version history",
-                    "Approval workflow",
-                    "MITRE mapping",
-                  ],
-                  impact: [
-                    "40% faster rule deployment",
-                    "Reduced false positives",
-                  ],
-                });
-                setOpenPanel(true);
-              }}
-              className="group flex cursor-pointer items-center justify-between rounded-lg border border-border bg-surface px-4 py-4 transition-colors hover:border-teal/40 hover:bg-surface-elevated"
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-medium">{c}</span>
-              </div>
+         {cases.map((c) => {
+  const Icon = c.icon;
 
-              <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-teal" />
-            </div>
-          ))}
+  return (
+    <div
+      key={c.title}
+      onClick={() => {
+        setSelectedUseCase(c);
+        setOpenPanel(true);
+      }}
+      className="group flex cursor-pointer items-center justify-between rounded-lg border border-border bg-surface px-4 py-4 transition-colors hover:border-teal/40 hover:bg-surface-elevated"
+    >
+      <div className="flex items-center gap-3">
+        <Icon className="h-5 w-5 text-teal" />
+        <span className="text-sm font-medium">{c.title}</span>
+      </div>
+
+      <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-teal" />
+    </div>
+  );
+})}
         </div>
       </div>
     </section>
 
-    <UseCasePanel
-      open={openPanel}
-      setOpen={setOpenPanel}
-      data={selectedUseCase}
-    />
+   <UseCasePanel
+  open={openPanel}
+  setOpen={setOpenPanel}
+  data={selectedUseCase}
+/>
   </>
 );
 }

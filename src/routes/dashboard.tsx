@@ -84,7 +84,7 @@ rejectedAt: string | null;
     }
   };
 
-  
+  //https://detection-forge-server.vercel.app
   const handleApprove = async (id: string) => {
   try {
     const res = await axios.patch(
@@ -166,9 +166,6 @@ const filteredRequests = requests.filter((req) =>
   return (
     <PageShell>
       <div className="flex min-h-[calc(100vh-64px)]">
-        
-        
-
         {/* Right Content */}
         <main className="flex-1 p-8">
           <h1 className="text-3xl font-bold">
@@ -180,9 +177,9 @@ const filteredRequests = requests.filter((req) =>
           </p>
 
           <div className="mt-3 p-6">
-           <div className="grid gap-6 md:grid-cols-4">            
+           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">        
              {data.map((item, index) => (
-                <div className="rounded-xl border border-border bg-card p-5">
+                <div className="rounded-xl border border-border bg-card p-4 min-w-0">
                 <div className="flex items-start gap-4">
                 <div className={`rounded-xl ${item.background} p-3`}>
                     {item.icon}
@@ -209,33 +206,37 @@ const filteredRequests = requests.filter((req) =>
            </div>
           </div>
 
-          <div className="">
-            <div className="flex gap-2 border-b border-border">
-                 {tabs.map((tab) => (
-                    <button
-                    key={tab.key}
-                    onClick={() => setActiveTab(tab.key)}
-                    className={`px-4 py-2 text-sm font-medium transition ${
-                        activeTab === tab.key
-                        ? "border-b-2 border-cyan-500 text-cyan-500"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    >
-                    {tab.label}
-                    </button>
-                ))}
-            </div>
-          </div>
+          <div className="flex border-b border-border">
+  {tabs.map((tab) => (
+    <button
+      key={tab.key}
+      onClick={() => setActiveTab(tab.key)}
+      className={`flex-1 px-2 py-2 text-xs sm:text-sm font-medium transition ${
+        activeTab === tab.key
+          ? "border-b-2 border-cyan-500 text-cyan-500"
+          : "text-muted-foreground hover:text-foreground"
+      }`}
+    >
+      {tab.label}
+    </button>
+  ))}
+</div>t
         <div className="mt-5 max-h-[500px] overflow-y-auto space-y-5 pr-2 ">
-          {filteredRequests.map((request) => (
+          {filteredRequests.length === 0 ? (
+  <div className="flex h-40 items-center justify-center rounded-xl border border-dashed border-border">
+    <p className="text-muted-foreground">
+      No requests found.
+    </p>
+  </div>
+) : (filteredRequests.map((request) => (
   <div
     key={request._id}
     className="mt-5 rounded-xl border border-border bg-card p-6"
   >
-    <div className="flex items-start justify-between gap-6">
+    <div className="flex flex-col gap-6 lg:flex-row lg:justify-between">
 
       {/* Left Section */}
-      <div className="flex flex-1 items-start gap-5">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-start flex-1">
 
         {/* Initials Avatar */}
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-700">
@@ -291,10 +292,10 @@ const filteredRequests = requests.filter((req) =>
       </div>
 
       {/* Status + Actions */}
-      <div className="flex flex-col items-end gap-4">
+      <div className="flex flex-col gap-4 lg:items-end">
 
         <span
-          className={`rounded-full px-4 py-1 text-xs font-semibold
+          className={`rounded-full px-4 py-2 text-xs font-semibold w-25 flex items-center 
             ${
               request.status === "approved"
                 ? "bg-green-100 text-green-700"
@@ -306,7 +307,7 @@ const filteredRequests = requests.filter((req) =>
           {request.status.toUpperCase()}
         </span>
 
-        <p className="text-right text-xs text-muted-foreground">
+        <p className="md:text-right text-xs text-muted-foreground">
           Requested on <br />
           {new Date(request.createdAt).toLocaleString()}
         </p>
@@ -324,11 +325,11 @@ const filteredRequests = requests.filter((req) =>
         </p>
         )}
         {request.status === "pending" && (
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full">
 
             <button
               onClick={() => handleApprove(request._id)}
-              className="rounded-md border border-green-500 px-4 py-2 text-sm font-medium text-green-600 transition hover:bg-green-50"
+              className="w-full sm:w-auto rounded-md border border-green-500 px-4 py-2 text-sm font-medium text-green-600 transition hover:bg-green-50"
             >
               ✓ Approve
             </button>
@@ -347,7 +348,7 @@ const filteredRequests = requests.filter((req) =>
 
     </div>
   </div>
-))}
+)))}
 </div>
         </main>
       </div>

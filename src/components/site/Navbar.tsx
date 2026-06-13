@@ -4,7 +4,7 @@ import { useState,useEffect } from "react";
 import { useTheme } from "@/lib/theme";
 import { openBookDemo } from "@/components/site/BookDemoDialog";
 import { openSignIn } from "./SignInDialog";
-import { openSignUp } from "./SignUpDailog";
+import { openUpdateDialog } from "./UpdatePasswordDialog";
 import logo from "../../assets/Logo2.png";
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/context/AuthContext";
@@ -26,11 +26,11 @@ export function Navbar() {
 
   const { isLoggedIn, setIsLoggedIn } = useAuth();
  
-  const [role, setRole] = useState(
-  localStorage.getItem("role") || ""
-);
+ const [role, setRole] = useState("");
 
-  useEffect(() => {
+useEffect(() => {
+  setRole(localStorage.getItem("role") || "");
+
   const handleRoleChange = () => {
     setRole(localStorage.getItem("role") || "");
   };
@@ -153,6 +153,9 @@ export function Navbar() {
             Admin Portal
           </button>
       )}
+      {/* <button onClick={openUpdateDialog} className="hidden h-9 items-center rounded-md border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated md:inline-flex">
+      Update Password
+    </button> */}
   <button
     onClick={handleLogout}
     className="hidden h-9 items-center rounded-md border border-border bg-surface px-3 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated md:inline-flex"

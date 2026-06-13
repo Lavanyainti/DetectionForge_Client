@@ -6,23 +6,26 @@ import {
   CheckCircle2,
   Dot,
 } from "lucide-react";
+
+import { LucideIcon } from "lucide-react";
+
+type UseCase = {
+  icon: LucideIcon;
+  title: string;
+  why: string;
+  features: string[];
+  impact: string[];
+};
+
 type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
-  data: {
-    icon: string;
-    title: string;
-    why: string;
-    features: string[];
-    impact: string[];
-  };
+  data: UseCase | null; // ✅ FIXED
 };
 
-export function UseCasePanel({
-  open,
-  setOpen,
-  data,
-}: Props) {
+export function UseCasePanel({ open, setOpen, data }: Props) {
+  if (!data) return null;
+  const Icon = data.icon;
   return (
     <div
       className={`fixed top-0 right-0 z-[100] h-screen w-[500px] border-l border-border bg-background shadow-2xl transition-all duration-300 overflow-y-auto
@@ -31,7 +34,7 @@ export function UseCasePanel({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border p-6">
         <div>
-          <p className="text-3xl">{data.icon}</p>
+          <Icon className="h-6 w-6 text-teal" />
           <h2 className="mt-2 text-2xl font-bold">
             {data.title}
           </h2>
